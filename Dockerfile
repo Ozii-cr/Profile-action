@@ -14,7 +14,12 @@ RUN cd profile-project &&  mvn install
 FROM tomcat:9-jre11
 LABEL "Project"="Profile"
 RUN rm -rf /usr/local/tomcat/webapps/*
+
+#copy the artifact from the build stage
 COPY --from=BUILD_IMAGE profile-project/target/vprofile-v2.war /usr/local/tomcat/webapps/ROOT.war
 
+# Expose the port the app runs on
 EXPOSE 8080
+
+# Define the command to run the application
 CMD ["catalina.sh", "run"]
