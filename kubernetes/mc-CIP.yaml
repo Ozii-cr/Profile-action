@@ -1,0 +1,15 @@
+apiVersion: apps/v1
+kind: Service
+metadata:
+#service name is from the application.properties file
+  name: profilecache01
+spec:
+  ports:
+#Accept request on port 11211 and forward on port 11211
+    - port: 11211
+      targetPort: profilemc-port
+      protocol: TCP
+
+  selector:
+    app: profilemc
+  type: ClusterIP
