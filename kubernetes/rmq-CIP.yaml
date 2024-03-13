@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+#service name is from the application.properties file
+  name: profilemq01
+spec:
+  ports:
+#Accept request on port 5672 and forward on port 15672
+  - port: 5672
+    targetPort: profilemq-port
+    protocol: TCP
+  selector:
+    app: profilemq
+  type: ClusterIP
