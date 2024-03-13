@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+
+kind: Deployment
+metadata:
+  name: profiledb
+  labels:
+    app: profiledb
+spec:
+  selector:
+    matchLabels:
+      app: profiledb
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: profiledb
+    spec:
+      containers:
+      - name: profiledb
+        image: vprofile/vprofiledb:V1
+        volumeMounts:
+          - mountPath: /var/lib/mysql
+            name: pro-db-data
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+          - name: profiledb-port
+            containerPort: 3306
+# set the envirnoment variable for the image             
+        env:
+          - name : MYSQL_ROOT_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: app-secret
+                key: db-pass
+#Run pod on specified node with the zone tag where the EBS volume is                 
+      nodeSelector: 
+        zone: us-east-1a
+      volumes: 
+        - name: pro-db-data
+          awsElasticBlockStore:
+            volumeID: vol-0c753d2c8d93aee23
+            fsType: ext4
+#Run an initial container to delete the folder created by formating 
+      initContainers:
+        - name : busybox
+          image: busybox:latest
+          args: [ "rm", "-rf", "/var/lib/sql/lost+found"]
+          volumeMounts: 
+            - name: pro-db-data
+              mountPath: /var/lib/mysql
+              
+      
