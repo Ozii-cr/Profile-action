@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: profilemc
+  labels:
+    app : profilemc
+spec:
+  selector:
+    matchLabels:
+      app : profilemc
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: profilemc
+    spec:
+      containers:
+        - name: profilemc
+          image: memcached
+          ports:
+            - containerPort: 11211
+              name: profilemc-port
