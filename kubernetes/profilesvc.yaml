@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: profileapp
+spec:
+  ports:
+  - port: 8080
+    protocol: TCP
+    targetPort: profileapp-port
+  selector:
+    app: profileapp
+  type: ClusterIP
