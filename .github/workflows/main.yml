@@ -59,7 +59,8 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_URL }} #OPTIONAL
-    
+          
+#Build image and upload to ecr after passing quality gate  
   BUILD_AND_PUBLISH:   
    needs: Testing
    runs-on: ubuntu-latest
